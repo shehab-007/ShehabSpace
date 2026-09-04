@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+ 
+<head>
+    <meta charset="UTF-8">
+    <title>Shehab Space</title>
+    <link rel="stylesheet" href="https://engage.moc.gov.sa/e/fonts/saudi-font/css/saudi-font.css">
+    <link rel="stylesheet" href="web.css">
+    <link rel="icon" type="image/png" href="stars.png">
+
+</head>
+
+<body>
+
+<div class="top-bar">
+    <div class="menu">
+        <a href="#about">من أنا؟</a>
+        <a href="#projects">أعمالي</a>
+        <a href="#photos">تصويري</a>
+        <a href="#movies">أفلامي</a>
+        <a href="#contact">تواصل معي</a>
+    </div>
+
+    <div class="right-side">
+        <div class="theme-toggle" id="themeToggle">🌙</div>
+        <div class="date" id="date"></div>
+        
+    </div>
+
+</div>
+<div class="hero">
+    <div class="hero-text">
+        <h1>هلا بالطيب الغالي</h1>
+        <p>
+        هلا بالطيب الغالي عزيز وشوفتك منوه
+
+ترى ما جا على بالي بشوف عيونك الحلوه
+        </p>
+    </div>
+
+    <div class="hero-img">
+        <img src="song.jpg" alt="صورة الأغنية">
+    </div>
+</div>
+<!-- قسم من أنا -->
+<section id="about" class="section-area">
+    <h1>من أنا؟</h1>
+    <p>أنا شهاب، طالب شبكات في جامعة الملك فيصل - الأحساء</p>
+    <p>مهتم بالأفلام، التكنولوجيا، والتاريخ.</p>
+</section>
+
+<!-- قسم أعمالي -->
+<section id="projects" class="section-area">
+    <h1>أعمالي</h1>
+    <p class="soon">قريباً....</p>
+</section>
+
+<!-- قسم تصويري -->
+<section id="photos" class="section-area">
+    <h1>تصويري</h1>
+
+    <div class="gallery">
+        <img src="P1.JPG" alt="صورة 1">
+        <img src="P2.JPG" alt="صورة 2">
+        <img src="P3.JPG" alt="صورة 3">
+        <img src="P4.JPG" alt="صورة 4">
+        
+        <img src="P5.JPG" alt="صورة 5">
+        <img src="P6.JPG" alt="صورة 6">
+
+    </div>
+</section>
+
+<section id="movies" class="section-area">
+    <h1>أفلامي</h1>
+   <div class="fav-header">
+    <div class="fav-title">
+    </div>
+<div class="fav-header">
+
+    <div class="fav-buttons">
+        <a href="best10.html" class="fav-btn">أفضل 10 أفلام</a>
+        <a href="https://letterboxd.com/zhehab/" target="_blank" class="fav-btn">حسابي Letterboxd</a>
+    </div>
+</div>
+<br>
+    <p class="last-title"><b>آخر 5 أفلام شفتها:</b></p>
+    <div id="movie-list"></div>
+</section>
+
+<!-- قسم تواصل معي -->
+<section id="contact" class="section-area">
+    <h1 class="contact-title">تواصل معي</h1>
+
+    <div class="contact-box">
+        <div class="social-icons">
+            <a href="https://www.snapchat.com/add/u16wh" target="_blank">
+                <img src="snap.png" alt="Snapchat">
+            </a>
+
+            <a href="https://instagram.com/ek8.9" target="_blank">
+                <img src="insta.png" alt="Instagram">
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<div id="backToTop">↑</div>
+
+<script>
+const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+
+document.getElementById("date").innerText =
+    "التاريخ: " + new Date().toLocaleDateString("en-GB", options);
+</script>
+
+<script>
+function loadMovies() {
+    fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/_4flmer/rss/")
+      .then(res => res.json())
+      .then(data => {
+
+          if (!data.items) {
+              document.getElementById("movie-list").innerHTML = "<p>تعذر تحميل الأفلام</p>";
+              return;
+          }
+
+          let html = "";
+          data.items.slice(0, 5).forEach(item => {
+
+              // استخراج الصورة
+              let img = "photo/default.jpg";
+              const match = item.description.match(/<img[^>]+src="([^">]+)"/);
+
+              if (match && match[1]) {
+                  img = match[1];
+              }
+
+              html += `
+                  <div class="movie-card">
+                      <img src="${img}" alt="${item.title}">
+                      <p>${item.title}</p>
+                  </div>
+              `;
+          });
+
+          document.getElementById("movie-list").innerHTML = html;
+      })
+      .catch(() => {
+          document.getElementById("movie-list").innerHTML = "<p>خطأ في تحميل الأفلام</p>";
+      });
+}
+
+loadMovies();
+</script>
+
+
+
+<script>
+const toggle = document.getElementById("themeToggle");
+
+// تحميل الوضع من التخزين
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    toggle.textContent = "☀️";
+}
+
+toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        toggle.textContent = "☀️";
+        localStorage.setItem("theme", "dark");
+    } else {
+        toggle.textContent = "🌙";
+        localStorage.setItem("theme", "light");
+    }
+});
+</script>
+
+<script>
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) {
+        backToTop.style.display = "block";
+    } else {
+        backToTop.style.display = "none";
+    }
+});
+
+backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+
+
+
+
+
+<footer class="footer">
+    <p>© 2026 Shehab Space — جميع الحقوق محفوظة</p>
+</footer>
+
+</body>
+</html>

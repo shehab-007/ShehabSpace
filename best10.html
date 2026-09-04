@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أفضل 10 أفلام</title>
+    <link rel="stylesheet" href="web.css">
+</head>
+
+<body>
+<div class="top-bar">
+    <div class="menu">
+        <a href="index.html#about">من أنا؟</a>
+        <a href="index.html#projects">أعمالي</a>
+        <a href="index.html#photos">تصويري</a>
+        <a href="index.html#movies">أفلامي</a>
+        <a href="index.html#contact">تواصل معي</a>
+    </div>
+
+    <div class="right-side">
+        <div class="theme-toggle" id="themeToggle">🌙</div>
+        <div class="date" id="date"></div>
+    </div>
+</div>
+
+<section class="best10-section">
+    <h1>أفضل 10 أفلام</h1>
+
+    <div class="best10-grid">
+
+        <div class="best10-card">
+            <img src="photo/m1.jpg" alt="">
+            <p>اسم الفيلم 1</p>
+        </div>
+
+        <div class="best10-card">
+            <img src="photo/m2.jpg" alt="">
+            <p>اسم الفيلم 2</p>
+        </div>
+
+        <!-- كرر لين 10 أفلام -->
+        
+    </div>
+</section>
+
+<script>
+const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+document.getElementById("date").innerText =
+    "التاريخ: " + new Date().toLocaleDateString("en-GB", options);
+</script>
+
+
+<script>
+const toggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    toggle.textContent = "☀️";
+}
+
+toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        toggle.textContent = "☀️";
+        localStorage.setItem("theme", "dark");
+    } else {
+        toggle.textContent = "🌙";
+        localStorage.setItem("theme", "light");
+    }
+});
+</script>
+
+
+</body>
+</html>
